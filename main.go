@@ -10,37 +10,32 @@ func main() {
 func knapsack(maxW int, weights []int, vals []int) (int, []int) {
 	n := len(weights)
 	nLim := n + 1
-	k := make([][]int, nLim)
+	var k [2][]int
 	wLim := maxW + 1
-	for i := 0; i < nLim; i++ {
+	for i := 0; i < 2; i++ {
 		k[i] = make([]int, wLim)
 	}
 
-	a := make([][][]int, nLim)
-	for i := 0; i < nLim; i++ {
+	var a [2][][]int
+	for i := 0; i < 2; i++ {
 		a[i] = make([][]int, wLim)
 	}
 
 	for i := 1; i < nLim; i++ {
 		weight := weights[i-1]
-		for w := 1; w < wLim; w++ {
-			p := k[i-1][w]
-			if w < weight {
-				k[i][w] = p
-				a[i][w] = a[i-1][w]
-			} else {
-				c := vals[i-1] + k[i-1][w-weight]
-				if c > p {
-					k[i][w] = c
-					a[i][w] = append(a[i-1][w-weight], i-1)
-				} else {
-					k[i][w] = p
-					a[i][w] = a[i-1][w]
-				}
+		for w := weight; w < wLim; w++ {
+			wDiff := w - weight
+			p := k[0][w]
+			c := vals[i-1] + k[0][wDiff]
+			if c > p {
+				k[1][w] = c
+				a[1][w] = append(a[0][wDiff], i-1)
 			}
 		}
 		fmt.Printf("i: %v, k: %v\n", i, k)
+		copy(k[0], k[1])
+		copy(a[0], a[1])
 	}
 
-	return k[n][maxW], a[n][maxW]
+	return k[1][maxW], a[1][maxW]
 }
