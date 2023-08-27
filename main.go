@@ -9,9 +9,8 @@ func main() {
 
 func knapsack(maxW int, weights []int, vals []int) (int, []int) {
 	n := len(weights)
-	nLim := n + 1
-	var k [2][]int
 	wLim := maxW + 1
+	var k [2][]int
 	for i := 0; i < 2; i++ {
 		k[i] = make([]int, wLim)
 	}
@@ -21,15 +20,15 @@ func knapsack(maxW int, weights []int, vals []int) (int, []int) {
 		a[i] = make([][]int, wLim)
 	}
 
-	for i := 1; i < nLim; i++ {
-		weight := weights[i-1]
+	for i := 0; i < n; i++ {
+		weight := weights[i]
 		for w := weight; w < wLim; w++ {
 			wDiff := w - weight
 			p := k[0][w]
-			c := vals[i-1] + k[0][wDiff]
+			c := vals[i] + k[0][wDiff]
 			if c > p {
 				k[1][w] = c
-				a[1][w] = append(a[0][wDiff], i-1)
+				a[1][w] = append(a[0][wDiff], i)
 			}
 		}
 		fmt.Printf("i: %v, k: %v\n", i, k)
