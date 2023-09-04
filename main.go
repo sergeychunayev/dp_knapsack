@@ -31,7 +31,6 @@ func knapsack(maxW int, weights []int, vals []int) (int, []int) {
 				a[1][w] = append(a[0][wDiff], i)
 			}
 		}
-		fmt.Printf("i: %v, k: %v\n", i, k)
 		copy(k[0], k[1])
 		copy(a[0], a[1])
 	}
